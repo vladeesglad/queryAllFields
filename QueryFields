@@ -1,0 +1,104 @@
+public class queryFields {
+
+//	THE MAIN OBJECTIVE OF QUERYFIELDS IS TO PRODUCE A 'DROP-IN' QUERY STATEMENT FOR A SOQL BETWEEN THE 'SELECT' AND THE 'FROM'    
+//	IN THE ABSTRACT WORKS FOR ALL STANDARD, CUSTOM OBJECT AND FOR METADATA RECORD TYPES...
+
+    public static string noSystemFields(string name) {
+        string exp;
+        
+        boolean all = false;
+        exp = queryFields.stringBuilder(name, all);
+
+        return exp;        
+    }    
+    
+    
+    public static string gitemAll(string name) {
+        string express;
+        boolean all = true;
+        express = queryFields.stringBuilder(name, all);
+        return express;        
+    }
+    
+    
+    private static string stringBuilder(string name, boolean all) {
+        
+        string expr = '';
+        
+        
+        Map<String,Schema.SObjectType> globe = Schema.getGlobalDescribe();
+        
+        Schema.SObjectType sobjType = globe.get(name);
+        
+        Schema.DescribeSObjectResult res = sobjType.getDescribe();
+        
+        Map<String,Schema.SObjectField> fieldMap = res.fields.getMap();
+        
+        set <string> notAdd = new set <string>{'isdeleted','createdbyid','lastmodifiedbyid','lastmodifieddate','systemmodstamp',
+            'lastactivitydate','lastvieweddate','lastreferenceddate','bodyistruncated','charset','headers','mimetypesubtype',
+            'ownerid'};
+
+        for (string key : fieldmap.keyset()) {
+            key = key.tolowercase();
+            if (!notAdd.contains(key)) {
+                expr += key + ',';
+            } 
+        }
+        
+        expr = expr.tolowercase();
+
+        expr = expr.removeEnd(',');
+        
+        system.debug(expr);
+        return expr;
+    }
+
+//	THE REST OF THESE METHODS ARE OBJECT-SPECIFIC    
+
+
+
+
+
+    
+    public static string emailRecords() {
+        
+        string expr = '';
+        
+        Map <String, Schema.SObjectField> fieldMap = Schema.SObjectType.emailRecords__mdt.fields.getMap();
+        
+        for (string key : fieldmap.keyset()) {
+            expr += key + ',';
+            
+        }
+        expr = expr.removeEnd(',');
+        
+        system.debug(expr);
+        return expr;
+    }
+    
+    
+
+    
+    public static string transactionFields() {
+        
+        string expr = '';
+        
+        Map <String, Schema.SObjectField> fieldMap = Schema.SObjectType.transaction__c.fields.getMap();
+        
+        for (string key : fieldmap.keyset()) {
+            expr += key + ',';
+            
+        }
+        expr = expr.removeEnd(',');
+        
+        system.debug(expr);
+        return expr;
+    }
+    
+    
+
+
+
+    
+    
+}
