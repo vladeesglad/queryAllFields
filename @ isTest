@@ -1,0 +1,120 @@
+@istest
+
+public class testQueryAllFields {
+    
+
+    public static testmethod void runtestqueryallfields() {
+        
+ 
+        map <integer, string> allNames = new map <integer, string>();	
+        
+        integer fetcher;
+        
+        string query;
+        string queryresult;
+        boolean found;
+        
+        Map<String,Schema.SObjectType> globalObjects = Schema.getGlobalDescribe();
+        
+        integer allsObjects = globalObjects.size();
+
+        integer z = 0;
+        
+        for (string key : globalObjects.keyset()) {
+            allNames.put(z,key);         
+            z++;
+        }
+        
+        decimal rand = math.random();
+        
+        fetcher = integer.valueof((rand * z).round(system.roundingmode.down));
+        
+        system.debug(rand);
+        system.debug(fetcher);
+        
+		system.debug(allnames.get(fetcher));
+
+		system.debug(globalobjects.get(allNames.get(fetcher)));
+        
+        integer x;
+                
+
+        test.startTest();
+
+
+//		THIS TESTS METHOD INTHEABSTRACT  and GITTEMALL      
+        
+        
+
+        for (x=0;x<4;x++) {
+            
+            rand = math.random();
+            fetcher = integer.valueof((rand * z).round(system.roundingmode.down));
+            query = allnames.get(fetcher);
+            queryresult = queryallfields.intheAbstract(query);
+            system.debug(queryresult);
+            
+            found = queryresult.contains('isdeleted');
+            
+            system.assertNotEquals(null, queryresult);
+            system.assertequals(false,found);
+            
+        }
+        
+        for (x=0;x<4;x++) {
+            
+            rand = math.random();
+            fetcher = integer.valueof((rand * z).round(system.roundingmode.down));
+            query = allnames.get(fetcher);
+            queryresult = queryallfields.gittemall(query);
+            system.debug(queryresult);
+            
+            found = queryresult.contains('isdeleted');
+            
+            system.assertNotEquals(null, queryresult);
+//            system.assertequals(true,found);  NOT EVERY OBJECT HAS FIELDS AS DEFINED IN FILTER...
+            
+        }
+
+//		THIS TESTS VOID STATIC METHOD COLORSETS     
+        
+        string colorqstring = '';
+        colorqstring = queryallfields.colorsets();
+        
+        system.assertnotequals(null,colorqstring);
+        
+//		THIS TEST OTHER STATIC METHOD DSPEVALS    
+        
+        string dspqstring = '';
+        
+        dspqstring = queryallfields.dspevals();
+        
+        system.assertnotequals(null, dspqstring);
+        
+//	     NEXT METHOD -- FIRST QUERY EXISTING RECORDS AND USE VALUE TO BUILD QUERY       
+         
+        list <color_set__mdt> colorlist = new list <color_set__mdt>([SELECT MasterLabel, DeveloperName 
+                                          FROM color_set__mdt LIMIT 1]);
+        
+        system.debug(colorlist[0].MasterLabel);        
+                
+        queryAllFields inst = new queryAllFields();
+        
+
+        map <string, string> dspcolorset = new map <string, string>();
+        
+        if (!colorList.isempty()) {
+            dspcolorset = inst.getColors(colorList[0].MasterLabel);
+        }
+        
+        
+        if (!dspcolorset.isEmpty()) {
+            
+            system.assertequals(4, dspcolorset.size());
+            
+        }
+        
+        test.stopTest();     
+               
+    }
+}
